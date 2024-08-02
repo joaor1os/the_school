@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login.css">
+    <title>Login</title>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('error')) {
+                alert('Credenciais incorretas. Tente novamente.');
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form action="includes/login.php" method="post">
+            <label for="tipo_usuario">Tipo de Usuário:</label>
+            <select id="tipo_usuario" name="tipo_usuario">
+                <option value="1">Instituição</option>
+                <option value="2">Professor</option>
+                <option value="3">Aluno</option>
+            </select>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
+</html>
