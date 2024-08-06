@@ -1,12 +1,27 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "bd_tcc";
+class Database {
+    private $servername = "localhost";
+    private $username = "root";
+    private $password = "";
+    private $dbname = "bd_tcc";
+    public $conn;
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+    public function __construct() {
+        $this->connect();
+    }
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    private function connect() {
+        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
+
+        if ($this->conn->connect_error) {
+            die("Connection failed: " . $this->conn->connect_error);
+        }
+    }
+
+    public function close() {
+        if ($this->conn) {
+            $this->conn->close();
+        }
+    }
 }
 ?>
