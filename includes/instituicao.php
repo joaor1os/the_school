@@ -1,4 +1,7 @@
 <?php
+include_once 'db.php';
+include_once 'EmailSender.php';
+
 class Instituicao {
     private $conn;
     private $table_name = "instituicao";
@@ -33,13 +36,10 @@ class Instituicao {
     }
 
     private function sendEmail() {
-        $subject = "Cadastro de Instituição";
-        $message = "Sua conta foi criada com sucesso. Sua senha é: " . $this->senha;
-        $headers = 'From: bdtcc@email.com' . "\r\n" .
-                   'Reply-To: bdtcc@email.com' . "\r\n" .
-                   'X-Mailer: PHP/' . phpversion();
-
-        mail($this->email, $subject, $message, $headers);
+        $emailSender = new EmailSender();
+        $subject = 'Cadastro de Instituição';
+        $body = 'Sua conta foi criada com sucesso. Sua senha é: ' . $this->senha;
+        $emailSender->send($this->email, $subject, $body);
     }
 
     public function generateAndSetPassword() {
