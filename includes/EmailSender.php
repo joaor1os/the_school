@@ -13,7 +13,7 @@ function sendEmail($to, $subject, $body) {
         $mail->Host = 'smtp.gmail.com'; // Servidor SMTP do Gmail
         $mail->SMTPAuth = true;
         $mail->Username = 'theschooltcc@gmail.com'; // Seu e-mail Gmail
-        $mail->Password = 'rreh hmem refy eobp'; // Sua senha do Gmail (ou senha de app)
+        $mail->Password = ''; // Sua senha do Gmail (ou senha de app)
         $mail->SMTPSecure = 'tls'; // TLS é necessário para Gmail
         $mail->Port = 587; // Porta para TLS
 
