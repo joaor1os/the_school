@@ -16,6 +16,11 @@ class Instituicao {
     }
 
     public function cadastrar() {
+        if ($this->emailExists()) {
+            echo "Erro: O e-mail já está cadastrado.";
+            return false;
+        }
+
         $query = "INSERT INTO " . $this->table_name . " (nome_inst, cnpj, tipo_usuario, email, senha) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
         $senha_criptografada = password_hash($this->senha, PASSWORD_DEFAULT);
@@ -27,19 +32,29 @@ class Instituicao {
             $this->sendEmail();
             return true;
         } else {
+            echo "Erro ao cadastrar a instituição.";
             return false;
         }
     }
 
-    private function generatePassword($length = 8) {
+    private function emailExists() {
+        $query = "SELECT email FROM " . $this->table_name . " WHERE email = ? LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("s", $this->email);
+        $stmt->execute();
+        $stmt->store_result();
+
+        return $stmt->num_rows > 0;
+    }
+
+    private function generatePassword($length = 16) {
         return substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, $length);
     }
 
     private function sendEmail() {
-        $emailSender = new EmailSender();
         $subject = 'Cadastro de Instituição';
         $body = 'Sua conta foi criada com sucesso. Sua senha é: ' . $this->senha;
-        $emailSender->send($this->email, $subject, $body);
+        sendEmail($this->email, $subject, $body);
     }
 
     public function generateAndSetPassword() {

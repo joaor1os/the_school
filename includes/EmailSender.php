@@ -4,43 +4,38 @@ require __DIR__ . '/../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class EmailSender {
-    private $mail;
+function sendEmail($to, $subject, $body) {
+    $mail = new PHPMailer(true);
 
-    public function __construct() {
-        $this->mail = new PHPMailer(true);
-
-        // Configurações do servidor SMTP do Titan
-        $this->mail->isSMTP();
-        $this->mail->Host = 'ssl://smtp.titan.email'; // Servidor SMTP do Titan
-        $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'tcc@theschool.fun'; // Seu e-mail do Titan
-        $this->mail->Password = 'Tcc2024@'; // Sua senha do e-mail do Titan
-        $this->mail->SMTPSecure = 'ssl'; // ou 'ssl' se preferir
-        $this->mail->Port = 465; // Porta para TLS (use 465 para SSL)
+    try {
+        // Configurações do servidor SMTP do Google
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com'; // Servidor SMTP do Gmail
+        $mail->SMTPAuth = true;
+        $mail->Username = 'theschooltcc@gmail.com'; // Seu e-mail Gmail
+        $mail->Password = 'rreh hmem refy eobp'; // Sua senha do Gmail (ou senha de app)
+        $mail->SMTPSecure = 'tls'; // TLS é necessário para Gmail
+        $mail->Port = 587; // Porta para TLS
 
         // Endereço do remetente
-        $this->mail->setFrom('tcc@theschool.fun', 'TheSchoolTCC
-');
-    }
+        $mail->setFrom('theschooltcc@gmail.com', 'TheSchoolTCC');
 
-    public function send($to, $subject, $body) {
-        try {
-            // Adicionar destinatário
-            $this->mail->addAddress($to);
+        // Definir a codificação do e-mail para UTF-8
+        $mail->CharSet = 'UTF-8';
 
-            // Conteúdo do e-mail
-            $this->mail->isHTML(true);
-            $this->mail->Subject = $subject;
-            $this->mail->Body = $body;
+        // Adicionar destinatário
+        $mail->addAddress($to);
 
-            // Enviar o e-mail
-            $this->mail->send();
-            return true;
-        } catch (Exception $e) {
-            echo 'Erro ao enviar e-mail: ', $this->mail->ErrorInfo;
-            return false;
-        }
+        // Conteúdo do e-mail
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+
+        // Enviar o e-mail
+        $mail->send();
+        echo "E-mail enviado com sucesso!";
+    } catch (Exception $e) {
+        echo 'Erro ao enviar e-mail: ', $mail->ErrorInfo;
     }
 }
 ?>

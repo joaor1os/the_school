@@ -38,13 +38,13 @@ class User {
 
 class Instituicao extends User {
     protected function authenticate() {
-        $sql = "SELECT id_inst, email, senha FROM instituicao WHERE email = ? AND senha = ?";
+        $sql = "SELECT id_inst, email, senha FROM instituicao WHERE email = ?";
         return $this->executeQuery($sql);
     }
 
     protected function executeQuery($sql) {
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ss", $this->email, $this->senha);
+        $stmt->bind_param("s", $this->email);
         $stmt->execute();
         $stmt->store_result();
 
@@ -52,12 +52,17 @@ class Instituicao extends User {
             $stmt->bind_result($id_usuario, $db_email, $db_senha);
             $stmt->fetch();
 
-            session_start();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['email'] = $this->email;
-            $_SESSION['tipo_usuario'] = $this->tipo_usuario;
-            $_SESSION['id_usuario'] = $id_usuario; // Adicionando o ID do usuário à sessão
-            header("location: ../index.php");
+            // Verificar a senha criptografada
+            if (password_verify($this->senha, $db_senha)) {
+                session_start();
+                $_SESSION['loggedin'] = true;
+                $_SESSION['email'] = $this->email;
+                $_SESSION['tipo_usuario'] = $this->tipo_usuario;
+                $_SESSION['id_usuario'] = $id_usuario; // Adicionando o ID do usuário à sessão
+                header("location: ../index.php");
+            } else {
+                header("location: ../login.html?error=1");
+            }
         } else {
             header("location: ../login.html?error=1");
         }
@@ -68,13 +73,13 @@ class Instituicao extends User {
 
 class Professor extends User {
     protected function authenticate() {
-        $sql = "SELECT id_professor, email, senha FROM professor WHERE email = ? AND senha = ?";
+        $sql = "SELECT id_professor, email, senha FROM professor WHERE email = ?";
         return $this->executeQuery($sql);
     }
 
     protected function executeQuery($sql) {
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ss", $this->email, $this->senha);
+        $stmt->bind_param("s", $this->email);
         $stmt->execute();
         $stmt->store_result();
 
@@ -82,12 +87,17 @@ class Professor extends User {
             $stmt->bind_result($id_usuario, $db_email, $db_senha);
             $stmt->fetch();
 
-            session_start();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['email'] = $this->email;
-            $_SESSION['tipo_usuario'] = $this->tipo_usuario;
-            $_SESSION['id_usuario'] = $id_usuario; // Adicionando o ID do usuário à sessão
-            header("location: ../index.php");
+            // Verificar a senha criptografada
+            if (password_verify($this->senha, $db_senha)) {
+                session_start();
+                $_SESSION['loggedin'] = true;
+                $_SESSION['email'] = $this->email;
+                $_SESSION['tipo_usuario'] = $this->tipo_usuario;
+                $_SESSION['id_usuario'] = $id_usuario; // Adicionando o ID do usuário à sessão
+                header("location: ../index.php");
+            } else {
+                header("location: ../login.html?error=1");
+            }
         } else {
             header("location: ../login.html?error=1");
         }
@@ -98,13 +108,13 @@ class Professor extends User {
 
 class Aluno extends User {
     protected function authenticate() {
-        $sql = "SELECT matricula_aluno, email, senha FROM aluno WHERE email = ? AND senha = ?";
+        $sql = "SELECT matricula_aluno, email, senha FROM aluno WHERE email = ?";
         return $this->executeQuery($sql);
     }
 
     protected function executeQuery($sql) {
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ss", $this->email, $this->senha);
+        $stmt->bind_param("s", $this->email);
         $stmt->execute();
         $stmt->store_result();
 
@@ -112,12 +122,17 @@ class Aluno extends User {
             $stmt->bind_result($id_usuario, $db_email, $db_senha);
             $stmt->fetch();
 
-            session_start();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['email'] = $this->email;
-            $_SESSION['tipo_usuario'] = $this->tipo_usuario;
-            $_SESSION['id_usuario'] = $id_usuario; // Adicionando o ID do usuário à sessão
-            header("location: ../index.php");
+            // Verificar a senha criptografada
+            if (password_verify($this->senha, $db_senha)) {
+                session_start();
+                $_SESSION['loggedin'] = true;
+                $_SESSION['email'] = $this->email;
+                $_SESSION['tipo_usuario'] = $this->tipo_usuario;
+                $_SESSION['id_usuario'] = $id_usuario; // Adicionando o ID do usuário à sessão
+                header("location: ../index.php");
+            } else {
+                header("location: ../login.html?error=1");
+            }
         } else {
             header("location: ../login.html?error=1");
         }
